@@ -14,6 +14,26 @@ export class AppComponent implements OnInit, OnDestroy {
   images: Array<ImageBitmap> = [];
   loaded = false;
   preferredImageSize = new BehaviorSubject(100);
+  imagesDownloadedSoFar = 0;
+  assets = [
+    'Dark_Side_of_the_Moon.png',
+    'is_this_it.jpg',
+    'torches.jpg',
+    'goth_babe.jpg',
+    'lana.jpg',
+    'monkeys.jpg',
+    'stones.jpg',
+    'yellow_sub.jpg',
+    'adele.jpg',
+    'michael.jpg',
+    'taylorswift.png',
+    'youngthegiant.jpg',
+    'lorde.jpg',
+    'miley.png',
+    'hendrix.jpg',
+    'hendrix2.jpg',
+    'skynard.jpg'
+  ];
   ngOnInit(): void {
     this.subscriptions.push(
       fromEvent(window, 'resize').subscribe(() => {
@@ -26,32 +46,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   async loadImages(): Promise<void> {
-    const assets = [
-      'Dark_Side_of_the_Moon.png',
-      'is_this_it.jpg',
-      'torches.jpg',
-      'goth_babe.jpg',
-      'lana.jpg',
-      'monkeys.jpg',
-      'stones.jpg',
-      'yellow_sub.jpg',
-      'adele.jpg',
-      'michael.jpg',
-      'taylorswift.png',
-      'youngthegiant.jpg',
-      'lorde.jpg',
-      'miley.png',
-      'hendrix.jpg',
-      'hendrix2.jpg',
-      'skynard.jpg'
-    ];
-    for (const asset of assets) {
+    for (const asset of this.assets) {
       const result = await fetch('./assets/' + asset, {
         method: 'GET',
       });
 
       const image = await createImageBitmapUniversal(await result.blob());
       this.images.push(image);
+      this.imagesDownloadedSoFar++;
     }
     this.loaded = true;
   }

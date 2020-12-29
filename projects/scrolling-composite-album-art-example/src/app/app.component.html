@@ -6,3 +6,9 @@
 
   </lib-scrolling-composite>
 </div>
+
+<div *ngIf="!this.loaded">
+  <p>
+    Downloading images please wait ({{this.images}}/{{this.assets.length}})
+  </p>
+</div>
