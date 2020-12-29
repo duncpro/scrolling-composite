@@ -1,10 +1,8 @@
 # ScrollingComposite
 An angular component for rendering infinitely scrolling square composites like the
-one shown below. See demo here.
+one shown below. See bottom of README for an example.
 
-![screenshot](screenshot.png)
-
-# Features
+## Features
 - Tested on both Chrome and Safari.
 - Customizable scroll speed.
 - Customizable refresh rate.
@@ -60,3 +58,7 @@ import { ScrollingCompositeModule } from 'scrolling-composite';
 })
 export class AppModule { }
 ```
+
+
+## Example
+![screenshot](screenshot.png)
