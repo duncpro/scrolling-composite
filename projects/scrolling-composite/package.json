@@ -1,6 +1,7 @@
 {
   "name": "scrolling-composite",
-  "version": "0.0.2",
+  "version": "0.0.3",
+  "repository": "https://github.com/duncpro/scrolling-composite",
   "peerDependencies": {
     "@angular/common": "^11.0.5",
     "@angular/core": "^11.0.5"
