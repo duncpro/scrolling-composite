@@ -2,7 +2,6 @@
 An angular component for rendering infinitely scrolling square composites like the
 one shown below. [See example here](https://scrolling-composite.web.app/).
 
-
 ## Features
 - Tested on both Chrome and Safari.
 - Customizable scroll speed.
@@ -20,6 +19,7 @@ The utility function `createImageBitmapUniversal(blob: Blob): Promise<ImageBitma
   should use `createImageBitmapUniversal` as a drop-in replacement for `window.createImageBitmap`.
   
 ## Basic Usage Example
+`npm install scrolling-composite`
 ### app.component.ts
 ```ts
 export class AppComponent {
