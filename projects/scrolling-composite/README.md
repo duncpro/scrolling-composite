@@ -1,6 +1,7 @@
 # ScrollingComposite
 An angular component for rendering infinitely scrolling square composites like the
-one shown below. See bottom of README for an example.
+one shown below. [See example here](https://scrolling-composite.web.app/).
+
 
 ## Features
 - Tested on both Chrome and Safari.

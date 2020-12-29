@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "dist/scrolling-composite-album-art-example",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
