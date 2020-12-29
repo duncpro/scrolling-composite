@@ -58,7 +58,3 @@ import { ScrollingCompositeModule } from 'scrolling-composite';
 })
 export class AppModule { }
 ```
-
-
-## Example
-![screenshot](screenshot.png)
