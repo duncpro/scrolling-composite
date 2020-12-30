@@ -164,9 +164,7 @@ export class ScrollingCompositeComponent implements OnInit, OnDestroy {
     const iterator: RepeatingIterator<ImageBitmap> = new RepeatingIterator(this.images);
     const context: CanvasRenderingContext2D = this.canvasElementRef.nativeElement.getContext('2d');
     // Avoid potential integer overflow by resetting the index.
-    if (this.index >= this.images.length) {
-      this.index = iterator.normalizeIndex(this.index);
-    }
+    this.index = iterator.normalizeIndex(this.index);
     // Prepare the iterator before we begin drawing. Need to make sure we're starting with the right
     // image in the array.
     if (this.index > 0) {
@@ -175,8 +173,9 @@ export class ScrollingCompositeComponent implements OnInit, OnDestroy {
     context.clearRect(0, 0, this.compositeWidth.getValue(), this.compositeHeight.getValue());
     if (this.scrollDirection === ScrollDirectionType.RISING) {
       for (let y = 0 - this.offset; y < this.compositeHeight.getValue(); y += this.actualImageSize) {
-        for (let x = 0; x < this.compositeWidth.getValue(); x += this.actualImageSize) {
-          const image = iterator.next();
+        for (let columnI = 0; columnI < this.columnCount; columnI++) {
+          const [image, _] = iterator.next();
+          const x = this.actualImageSize * columnI;
           context.drawImage(image, x, y, this.actualImageSize, this.actualImageSize);
         }
       }
@@ -204,7 +203,7 @@ export class ScrollingCompositeComponent implements OnInit, OnDestroy {
 
 class RepeatingIterator<T> {
   private index = 0;
-  private array: Array<T>;
+  private readonly array: Array<T>;
   constructor(array: Array<T>) {
     this.array = Array.from(array); // defensive copy
   }
@@ -213,14 +212,16 @@ class RepeatingIterator<T> {
    * Returns the next element in the array. If the end of the array has been reached the first
    * element (index 0) will be returned and iteration will continue from that point.
    */
-  next(): T {
+  next(): [T, number] {
     if (this.array.length === 0) {
       throw new Error('There must be at least one element in the underlying array at all times.');
     }
+    const result: [T, number] = [this.array[this.index], this.index];
+    this.index++;
     if (this.index >= this.array.length) {
       this.index = 0;
     }
-    return this.array[this.index++];
+    return result;
   }
   normalizeIndex(index: number): number {
     if (index < this.array.length) {
