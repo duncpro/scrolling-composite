@@ -106,11 +106,17 @@ export class ScrollingCompositeComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.compositeHeight.subscribe((height) => {
         this.canvasElementRef.nativeElement.height = height;
+        if (!this.isStarted) {
+          this.fillBackgroundColor();
+        }
       })
     );
     this.subscriptions.push(
       this.compositeWidth.subscribe((width) => {
         this.canvasElementRef.nativeElement.width = width;
+        if (!this.isStarted) {
+          this.fillBackgroundColor();
+        }
       })
     );
     this.fillBackgroundColor();
