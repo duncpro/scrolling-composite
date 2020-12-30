@@ -127,7 +127,7 @@ export class ScrollingCompositeComponent implements OnInit, OnDestroy {
   private fillBackgroundColor(): void {
     const context = this.canvasElementRef.nativeElement.getContext('2d');
     context.fillStyle = this.backgroundColor;
-    context.fillRect(0, 0, this.compositeWidth.getValue(), this.compositeHeight.getValue());
+    context.fillRect(0, 0, context.canvas.width, context.canvas.height);
   }
 
   start(): void {
