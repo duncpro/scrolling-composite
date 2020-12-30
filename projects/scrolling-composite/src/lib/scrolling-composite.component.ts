@@ -15,11 +15,15 @@ enum ScrollDirectionType {
   template: `
     <canvas #canvas></canvas>
   `,
-  styles: [
-  ]
 })
 export class ScrollingCompositeComponent implements OnInit, OnDestroy {
   static ScrollDirectionType = ScrollDirectionType;
+
+  /**
+   * The canvas is filled with the backgroundColor upon ScrollingCompositeComponent's construction.
+   * Once {@link start} is invoked the backgroundColor will no longer be visible.
+   */
+  @Input() backgroundColor = 'white';
 
   /**
    * Describes how new images are added to the composite. If FALLING new rows will be appended
@@ -30,7 +34,8 @@ export class ScrollingCompositeComponent implements OnInit, OnDestroy {
   /**
    * An array of images to be included in the composite. As of the current version of scrolling-composite,
    * Images can not be added or removed from the composite after it has been created. Warning: The array
-   * you pass in will be frozen using Object.freeze(). Make a defensive copy if you still need to mutate the array.
+   * you pass in will be frozen using Object.freeze() after start() start() is invoked.
+   * Make a defensive copy if you still need to mutate the array.
    */
   @Input() images: ImageBitmap[];
 
@@ -98,9 +103,6 @@ export class ScrollingCompositeComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit(): void {
-    // Editing the array while the render thread is running will cause jumping.
-    // For this reason editing the array is disallowed.
-    Object.freeze(this.images);
     this.subscriptions.push(
       this.compositeHeight.subscribe((height) => {
         this.canvasElementRef.nativeElement.height = height;
@@ -111,15 +113,24 @@ export class ScrollingCompositeComponent implements OnInit, OnDestroy {
         this.canvasElementRef.nativeElement.width = width;
       })
     );
+    this.fillBackgroundColor();
     if (this.startAutomatically) {
       this.start();
     }
   }
+  private fillBackgroundColor(): void {
+    const context = this.canvasElementRef.nativeElement.getContext('2d');
+    context.fillStyle = this.backgroundColor;
+    context.fillRect(0, 0, this.compositeWidth.getValue(), this.compositeHeight.getValue());
+  }
 
-  private start(): void {
+  start(): void {
     if (this.isStarted) {
       throw new Error('The composite has already been started.');
     }
+    // Editing the array while the render thread is running will cause jumping.
+    // For this reason editing the array is disallowed.
+    Object.freeze(this.images);
     this.subscriptions.push(
       timer(undefined, this.redrawRate).subscribe(() => {
         this.draw();
